@@ -21,6 +21,7 @@ namespace ConfectioneryOrders
         private ucProducts ucProducts;
         private ucClients ucClients;
 
+        private frmUcDisplay frmDisplay;
 
         public frmMain()
         {
@@ -36,7 +37,7 @@ namespace ConfectioneryOrders
             this.tabProducts.Controls.Add(this.ucProducts);
             this.tabClients.Controls.Add(this.ucClients);
 
-
+            frmDisplay = new frmUcDisplay();
 
             //Order o = new Order() { ClientName = "Alice", VendorName = "Bob" };
             //Item i = new Item() { ProductName = "cupcacke", Quantity = 40 };
@@ -80,58 +81,105 @@ namespace ConfectioneryOrders
 
         private void addButt_Click(object sender, EventArgs e)
         {
-            // order vendor product client
-            switch (tabPaneMain.TabIndex)
+            if (tabPaneMain.SelectedPage == tabOrders)
             {
-                case 0:
-                    {
-
-                        if (grdOrders.FocusedView == gvItems)
-                        {
-                            Item i = new Item();
-                            cContext.Items.Add(i);
-                        }
-                        else
-                        {
-                            Order o = new Order();
-                            cContext.Orders.Add(o);
-                        }
-
-                        break;
-                    }
-                case 1:
-                    {
-                        if (ucVendors.IsDetailsFocused())
-                        {
-                            VendorProduct i = new VendorProduct();
-                            cContext.VendorsProducts.Add(i);
-                        }
-                        else
-                        {
-                            Vendor i = new Vendor();
-                            cContext.Vendors.Add(i);
-                        }
-                        break;
-                    }
-                case 2:
-                    {
-                        Product i = new Product();
-                        cContext.Products.Add(i);
-                        break;
-                    }
-                case 3:
+                if (grdOrders.FocusedView == gvItems)
                 {
-                    Client i = new Client();
-                    cContext.Clients.Add(i);
-                    break;
+                    Item i = new Item();
+                    cContext.Items.Add(i);
                 }
+                else
+                {
+                    Order o = new Order();
+                    cContext.Orders.Add(o);
+                }
+
+                return;
             }
+
+            if (tabPaneMain.SelectedPage == tabVendors)
+            {
+                if (ucVendors.IsDetailsFocused())
+                {
+                    VendorProduct i = new VendorProduct();
+                    cContext.VendorsProducts.Add(i);
+                }
+                else
+                {
+                    Vendor i = new Vendor();
+                    cContext.Vendors.Add(i);
+                }
+                return;
+            }
+
+            if (tabPaneMain.SelectedPage == tabProducts)
+            {
+                Product i = new Product();
+                cContext.Products.Add(i);
+                return;
+            }
+
+            if (tabPaneMain.SelectedPage == tabClients)
+            {
+                Client i = new Client();
+                cContext.Clients.Add(i);
+                return;
+            }
+            //// order vendor product client
+            //switch (tabPaneMain.TabIndex)
+            //{
+            //    case 0:
+            //        {
+
+            //            if (grdOrders.FocusedView == gvItems)
+            //            {
+            //                Item i = new Item();
+            //                cContext.Items.Add(i);
+            //            }
+            //            else
+            //            {
+            //                Order o = new Order();
+            //                cContext.Orders.Add(o);
+            //            }
+
+            //            break;
+            //        }
+            //    case 1:
+            //        {
+            //            if (ucVendors.IsDetailsFocused())
+            //            {
+            //                VendorProduct i = new VendorProduct();
+            //                cContext.VendorsProducts.Add(i);
+            //            }
+            //            else
+            //            {
+            //                Vendor i = new Vendor();
+            //                cContext.Vendors.Add(i);
+            //            }
+            //            break;
+            //        }
+            //    case 2:
+            //        {
+            //            Product i = new Product();
+            //            cContext.Products.Add(i);
+            //            break;
+            //        }
+            //    case 3:
+            //    {
+            //        Client i = new Client();
+            //        cContext.Clients.Add(i);
+            //        break;
+            //    }
+            //}
 
         }
 
         private void clientButtEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-
+            if (frmDisplay.ShowDialog(ucClients) == DialogResult.OK)
+            {
+            }
+            this.tabClients.Controls.Add(this.ucClients);
         }
 
         private void itemButtEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)

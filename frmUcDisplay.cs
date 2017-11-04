@@ -17,5 +17,15 @@ namespace ConfectioneryOrders
         {
             InitializeComponent();
         }
+
+        public DialogResult ShowDialog(UserControl uc)
+        {
+            uc.Dock = DockStyle.Fill;
+
+            this.splitContainer.Panel1.Controls.Clear();
+            this.splitContainer.Panel1.Controls.Add(uc);
+
+            return ShowDialog(); 
+        }
     }
 }
