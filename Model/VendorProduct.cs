@@ -8,25 +8,27 @@ using System.Threading.Tasks;
 
 namespace ConfectioneryOrders.Model
 {
-    public class Item
+    public class VendorProduct
     {
         public int ID { get; set; }
 
+        public string Name { get; set; }
+
         public int Quantity { get; set; }
+
+        [Required]
+        public int VendorID { get; set; }
+        [ForeignKey("VendorID")]
+        public Vendor Vendor { get; set; }
 
         [Required]
         public int ProductID { get; set; }
         [ForeignKey("ProductID")]
         public Product Product { get; set; }
-        
+
         [NotMapped]
         public string ProductName {
             get { return Product?.Name; }
         }
-
-        [Required]
-        public int OrderID { get; set; }
-        [ForeignKey("OrderID")]
-        public Order Order { get; set; }
     }
 }
