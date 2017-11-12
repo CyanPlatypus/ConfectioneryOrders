@@ -11,4 +11,9 @@ namespace ConfectioneryOrders.Model
         Object Add();
         void Delete(Object o);
     }
+
+    public interface IHaveObject
+    {
+        Object GetObject();
+    }
 }

@@ -36,9 +36,11 @@
             this.gvVendor = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.clmName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.clmPhone = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEditProduct = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.gvVP)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdVendors)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvVendor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditProduct)).BeginInit();
             this.SuspendLayout();
             // 
             // gvVP
@@ -48,10 +50,13 @@
             this.clmQuantity});
             this.gvVP.GridControl = this.grdVendors;
             this.gvVP.Name = "gvVP";
+            this.gvVP.OptionsDetail.AllowExpandEmptyDetails = true;
+            this.gvVP.OptionsView.ShowGroupPanel = false;
             // 
             // clmProduct
             // 
             this.clmProduct.Caption = "Product";
+            this.clmProduct.ColumnEdit = this.repositoryItemButtonEditProduct;
             this.clmProduct.FieldName = "ProductName";
             this.clmProduct.Name = "clmProduct";
             this.clmProduct.Visible = true;
@@ -75,6 +80,8 @@
             this.grdVendors.Location = new System.Drawing.Point(0, 0);
             this.grdVendors.MainView = this.gvVendor;
             this.grdVendors.Name = "grdVendors";
+            this.grdVendors.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemButtonEditProduct});
             this.grdVendors.Size = new System.Drawing.Size(404, 340);
             this.grdVendors.TabIndex = 1;
             this.grdVendors.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -88,6 +95,7 @@
             this.clmPhone});
             this.gvVendor.GridControl = this.grdVendors;
             this.gvVendor.Name = "gvVendor";
+            this.gvVendor.OptionsDetail.AllowExpandEmptyDetails = true;
             this.gvVendor.OptionsView.ShowGroupPanel = false;
             // 
             // clmName
@@ -106,6 +114,14 @@
             this.clmPhone.Visible = true;
             this.clmPhone.VisibleIndex = 1;
             // 
+            // repositoryItemButtonEditProduct
+            // 
+            this.repositoryItemButtonEditProduct.AutoHeight = false;
+            this.repositoryItemButtonEditProduct.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.repositoryItemButtonEditProduct.Name = "repositoryItemButtonEditProduct";
+            this.repositoryItemButtonEditProduct.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditProduct_ButtonClick);
+            // 
             // ucVendors
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -116,6 +132,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvVP)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdVendors)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvVendor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditProduct)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -129,5 +146,6 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gvVendor;
         private DevExpress.XtraGrid.Columns.GridColumn clmName;
         private DevExpress.XtraGrid.Columns.GridColumn clmPhone;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditProduct;
     }
 }

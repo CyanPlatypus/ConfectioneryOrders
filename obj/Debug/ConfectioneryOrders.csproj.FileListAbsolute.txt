@@ -187,3 +187,4 @@ D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.UC.ucClients.resource
 D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.UC.ucProducts.resources
 D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.UC.ucVendors.resources
 D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.frmUcDisplay.resources
+D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.frmMakeOrder.resources

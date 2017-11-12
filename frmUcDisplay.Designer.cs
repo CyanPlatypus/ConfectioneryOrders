@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.cancelButt = new DevExpress.XtraEditors.SimpleButton();
             this.okButton = new DevExpress.XtraEditors.SimpleButton();
+            this.cancelButt = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
@@ -48,20 +48,8 @@
             this.splitContainer.Panel2.Controls.Add(this.okButton);
             this.splitContainer.Panel2.Controls.Add(this.cancelButt);
             this.splitContainer.Size = new System.Drawing.Size(284, 261);
-            this.splitContainer.SplitterDistance = 230;
+            this.splitContainer.SplitterDistance = 228;
             this.splitContainer.TabIndex = 0;
-            // 
-            // cancelButt
-            // 
-            this.cancelButt.Appearance.BackColor = System.Drawing.Color.PaleVioletRed;
-            this.cancelButt.Appearance.Options.UseBackColor = true;
-            this.cancelButt.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.cancelButt.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButt.Location = new System.Drawing.Point(12, 1);
-            this.cancelButt.Name = "cancelButt";
-            this.cancelButt.Size = new System.Drawing.Size(75, 23);
-            this.cancelButt.TabIndex = 0;
-            this.cancelButt.Text = "Cancel";
             // 
             // okButton
             // 
@@ -74,6 +62,19 @@
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 1;
             this.okButton.Text = "Ok";
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            // 
+            // cancelButt
+            // 
+            this.cancelButt.Appearance.BackColor = System.Drawing.Color.PaleVioletRed;
+            this.cancelButt.Appearance.Options.UseBackColor = true;
+            this.cancelButt.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
+            this.cancelButt.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButt.Location = new System.Drawing.Point(12, 1);
+            this.cancelButt.Name = "cancelButt";
+            this.cancelButt.Size = new System.Drawing.Size(75, 23);
+            this.cancelButt.TabIndex = 0;
+            this.cancelButt.Text = "Cancel";
             // 
             // frmUcDisplay
             // 

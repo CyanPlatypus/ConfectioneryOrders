@@ -24,7 +24,21 @@ namespace ConfectioneryOrders.Model
 
         public override int SaveChanges()
         {
+            foreach (var vp in VendorsProducts.Local.Where(vp=>vp.Vendor==null || vp.Product == null).ToList())
+            {
+                VendorsProducts.Remove(vp);
+            }
 
+            foreach (var item in Items.Local.Where(i=>i.Order == null || i.Product == null ).ToList())
+            {
+                Items.Remove(item);
+            }
+
+            foreach (var e in Orders.Local.Where
+                (o=>(o.Client==null || o.Vendor == null || o.Items.Count == 0)).ToList())
+            {
+                Orders.Remove(e);
+            }
 
             return base.SaveChanges();
         }

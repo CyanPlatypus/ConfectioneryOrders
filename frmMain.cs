@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ConfectioneryOrders.UC;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace ConfectioneryOrders
 {
@@ -17,17 +19,19 @@ namespace ConfectioneryOrders
     {
         private ConfectioneryContext cContext;
 
-        private ucVendors ucVendors;
-        private ucProducts ucProducts;
-        private ucClients ucClients;
+        private ucBase ucVendors;
+        private ucBase ucProducts;
+        private ucBase ucClients;
 
         private frmUcDisplay frmDisplay;
+
+        //what can we delete?
 
         public frmMain()
         {
             InitializeComponent();
 
-            LoadDB("d");
+            LoadDB("k");
 
             ucVendors = new ucVendors(cContext.Vendors.Local.ToBindingList());
             ucProducts = new ucProducts(cContext.Products.Local.ToBindingList());
@@ -39,6 +43,27 @@ namespace ConfectioneryOrders
 
             frmDisplay = new frmUcDisplay();
 
+            //Vendor v = cContext.Vendors.Local[0];
+            //VendorProduct vp = new VendorProduct() { Quantity = 679 };
+            //vp.Product = cContext.Products.Local[1];
+            //v.VendorsProducts.Add(vp);
+
+            //Vendor vq = cContext.Vendors.Local[1];
+            //VendorProduct vpq = new VendorProduct() { Quantity = 534 };
+            //vpq.Product = cContext.Products.Local[1];
+            //vq.VendorsProducts.Add(vpq);
+
+            //Order o = cContext.Orders.Local[1];
+            //Item i = new Item() { Quantity = 7 };
+            //i.Product = cContext.Products.Local[1];
+
+            //o.Client = cContext.Clients.Local[0];
+            //o.Vendor = cContext.Vendors.Local[2];
+            //o.Items.Add(i);
+
+            //cContext.Orders.Add(o);
+
+
             //Order o = new Order() { ClientName = "Alice", VendorName = "Bob" };
             //Item i = new Item() { ProductName = "cupcacke", Quantity = 40 };
             //Item ii = new Item() { ProductName = "bun", Quantity = 30 };
@@ -46,11 +71,24 @@ namespace ConfectioneryOrders
             //o.Items.Add(ii);
             //cContext.Orders.Add(o);
 
-            //cContext.SaveChanges();
+            cContext.SaveChanges();
 
             //tabPaneMain.TabIndexChanged += TabPaneMain_TabIndexChanged;
             this.Load += FrmMain_Load;
             this.FormClosing += FrmMain_FormClosing;
+
+            gvOrders.MasterRowExpanded += GvOrders_MasterRowExpanded;
+        }
+
+        private void GvOrders_MasterRowExpanded(object sender, DevExpress.XtraGrid.Views.Grid.CustomMasterRowEventArgs e)
+        {
+            GridView childView = gvOrders.GetDetailView(e.RowHandle, e.RelationIndex) as GridView;
+            childView.Focus();
+
+            //Item i = new Item();
+            //i.Order = gvOrders.GetFocusedRow() as Order;
+            //cContext.Items.Add(i);
+
         }
 
         //private void TabPaneMain_TabIndexChanged(object sender, EventArgs e)
@@ -83,26 +121,36 @@ namespace ConfectioneryOrders
         {
             if (tabPaneMain.SelectedPage == tabOrders)
             {
-                if (grdOrders.FocusedView == gvItems)
-                {
-                    Item i = new Item();
-                    cContext.Items.Add(i);
-                }
-                else
+                using (frmMakeOrder f = new frmMakeOrder() )
                 {
                     Order o = new Order();
-                    cContext.Orders.Add(o);
+                    if (f.ShowDialog(o,
+                        EditClient, EditProduct, EditVendor) == DialogResult.OK)
+                    {
+                        cContext.Orders.Add(o);
+                    }
                 }
+                //if (grdOrders.FocusedView != gvItems)
+                //{
+                //    Order o = new Order();
+                //    cContext.Orders.Add(o);
+                //}
+                //else
+                //{
+                //    Item i = new Item();
+                //    cContext.Items.Add(i);
+                //}
 
                 return;
             }
 
             if (tabPaneMain.SelectedPage == tabVendors)
             {
-                if (ucVendors.IsDetailsFocused())
+                if ((ucVendors as ucVendors).IsDetailsFocused())
                 {
                     VendorProduct i = new VendorProduct();
-                    cContext.VendorsProducts.Add(i);
+                    (ucVendors as ucVendors).GetFocusedRow()?.VendorsProducts.Add(i);
+                    //cContext.VendorsProducts.Add(i);
                 }
                 else
                 {
@@ -174,21 +222,119 @@ namespace ConfectioneryOrders
 
         }
 
+        private void deleteButt_Click(object sender, EventArgs e)
+        {
+            if (tabPaneMain.SelectedPage == tabOrders)
+            {
+                if (grdOrders.FocusedView == gvItems)
+                {
+                    gvItems.DeleteSelectedRows();
+                }
+                else
+                {
+                    gvOrders.DeleteSelectedRows();
+                }
+
+                return;
+            }
+
+            if (tabPaneMain.SelectedPage == tabVendors)
+            {
+                if ((ucVendors as ucVendors).IsDetailsFocused())
+                {
+                    VendorProduct i = new VendorProduct();
+                    cContext.VendorsProducts.Add(i);
+                }
+                else
+                {
+                    Vendor i = new Vendor();
+                    cContext.Vendors.Add(i);
+                }
+                return;
+            }
+
+            if (tabPaneMain.SelectedPage == tabProducts)
+            {
+                Product i = new Product();
+                cContext.Products.Add(i);
+                return;
+            }
+
+            if (tabPaneMain.SelectedPage == tabClients)
+            {
+                Client i = new Client();
+                cContext.Clients.Add(i);
+                return;
+            }
+        }
+
+
         private void clientButtEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            if (frmDisplay.ShowDialog(ucClients) == DialogResult.OK)
+            Object o = frmDisplay.ShowDialog(ucClients);
+            if ( o != null && o is Client)
             {
+                (gvOrders.GetFocusedRow() as Order).Client = (Client)o;
             }
             this.tabClients.Controls.Add(this.ucClients);
         }
-
-        private void itemButtEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        
+        private void productButtEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-
+           
+            Object o = frmDisplay.ShowDialog(ucProducts);
+            if (o != null && o is Product)
+            {
+                Item i = (gvItems.GetFocusedRow() as Item);
+                //exception here (i is null)
+                (gvItems.GetFocusedRow() as Item).Product = (Product)o;
+            }
+            this.tabProducts.Controls.Add(this.ucProducts);
         }
 
         private void vendorButtEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
+            Object o = frmDisplay.ShowDialog(ucVendors);
+            if (o != null && o is Vendor)
+            {
+                (gvOrders.GetFocusedRow() as Order).Vendor = (Vendor)o;
+            }
+            this.tabVendors.Controls.Add(this.ucVendors);
+        }
+
+        public Client EditClient()
+        {
+            Object o = frmDisplay.ShowDialog(ucClients);
+            this.tabClients.Controls.Add(this.ucClients);
+            return o as Client;
+        }
+
+        public Vendor EditVendor()
+        {
+            Object o = frmDisplay.ShowDialog(ucVendors);
+            this.tabVendors.Controls.Add(this.ucVendors);
+            return o as Vendor;
+        }
+
+        public Product EditProduct()
+        {
+            Object o = frmDisplay.ShowDialog(ucProducts);
+            this.tabProducts.Controls.Add(this.ucProducts);
+            return o as Product;
+        }
+
+
+        private void saveButt_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                cContext.SaveChanges();
+                MessageBox.Show("Saved");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
         }
     }

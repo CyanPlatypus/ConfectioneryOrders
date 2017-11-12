@@ -10,21 +10,22 @@ using System.Windows.Forms;
 using ConfectioneryOrders.Model;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Base;
 
 namespace ConfectioneryOrders.UC
 {
-    public partial class ucProducts : ucBase
+    public partial class ucBase : DevExpress.XtraEditors.XtraUserControl, IHaveObject
     {
-        protected override GridControl grdMain {
-            get { return grdProducts; }
-        }
+        protected virtual GridControl grdMain { get; }
 
-        public ucProducts(BindingList<Product> bs)
+        public ucBase()
         {
             InitializeComponent();
-            this.Dock = DockStyle.Fill;
+        }
 
-            grdProducts.DataSource = bs;
+        public object GetObject()
+        {
+            return ((ColumnView)grdMain.FocusedView).GetFocusedRow();
         }
     }
 }

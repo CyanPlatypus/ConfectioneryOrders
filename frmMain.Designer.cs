@@ -31,12 +31,15 @@
             DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             this.gvItems = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.clmProduct = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.productButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.clmQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdOrders = new DevExpress.XtraGrid.GridControl();
             this.gvOrders = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.clmID = new DevExpress.XtraGrid.Columns.GridColumn();
             this.clmClient = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.clientButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.clmVendor = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.vendorButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.tabPaneMain = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabOrders = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tabVendors = new DevExpress.XtraBars.Navigation.TabNavigationPage();
@@ -45,19 +48,17 @@
             this.addButt = new DevExpress.XtraEditors.SimpleButton();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.deleteButt = new DevExpress.XtraEditors.SimpleButton();
-            this.clientButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.itemButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.vendorButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.saveButt = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gvItems)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.productButtEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdOrders)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvOrders)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clientButtEdit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vendorButtEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabPaneMain)).BeginInit();
             this.tabPaneMain.SuspendLayout();
             this.tabOrders.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.clientButtEdit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.itemButtEdit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vendorButtEdit)).BeginInit();
             this.SuspendLayout();
             // 
             // gvItems
@@ -67,15 +68,26 @@
             this.clmQuantity});
             this.gvItems.GridControl = this.grdOrders;
             this.gvItems.Name = "gvItems";
+            this.gvItems.OptionsBehavior.Editable = false;
+            this.gvItems.OptionsDetail.AllowExpandEmptyDetails = true;
+            this.gvItems.OptionsView.ShowGroupPanel = false;
             // 
             // clmProduct
             // 
             this.clmProduct.Caption = "Product";
-            this.clmProduct.ColumnEdit = this.itemButtEdit;
+            this.clmProduct.ColumnEdit = this.productButtEdit;
             this.clmProduct.FieldName = "ProductName";
             this.clmProduct.Name = "clmProduct";
             this.clmProduct.Visible = true;
             this.clmProduct.VisibleIndex = 1;
+            // 
+            // productButtEdit
+            // 
+            this.productButtEdit.AutoHeight = false;
+            this.productButtEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.productButtEdit.Name = "productButtEdit";
+            this.productButtEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.productButtEdit_ButtonClick);
             // 
             // clmQuantity
             // 
@@ -97,7 +109,7 @@
             this.grdOrders.Name = "grdOrders";
             this.grdOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.clientButtEdit,
-            this.itemButtEdit,
+            this.productButtEdit,
             this.vendorButtEdit});
             this.grdOrders.Size = new System.Drawing.Size(693, 556);
             this.grdOrders.TabIndex = 1;
@@ -113,6 +125,8 @@
             this.clmVendor});
             this.gvOrders.GridControl = this.grdOrders;
             this.gvOrders.Name = "gvOrders";
+            this.gvOrders.OptionsBehavior.Editable = false;
+            this.gvOrders.OptionsDetail.AllowExpandEmptyDetails = true;
             this.gvOrders.OptionsView.ShowGroupPanel = false;
             // 
             // clmID
@@ -133,6 +147,14 @@
             this.clmClient.Visible = true;
             this.clmClient.VisibleIndex = 1;
             // 
+            // clientButtEdit
+            // 
+            this.clientButtEdit.AutoHeight = false;
+            this.clientButtEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.clientButtEdit.Name = "clientButtEdit";
+            this.clientButtEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.clientButtEdit_ButtonClick);
+            // 
             // clmVendor
             // 
             this.clmVendor.Caption = "Vendor";
@@ -141,6 +163,14 @@
             this.clmVendor.Name = "clmVendor";
             this.clmVendor.Visible = true;
             this.clmVendor.VisibleIndex = 2;
+            // 
+            // vendorButtEdit
+            // 
+            this.vendorButtEdit.AutoHeight = false;
+            this.vendorButtEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.vendorButtEdit.Name = "vendorButtEdit";
+            this.vendorButtEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.vendorButtEdit_ButtonClick);
             // 
             // tabPaneMain
             // 
@@ -172,19 +202,19 @@
             // 
             this.tabVendors.Caption = "Vendors";
             this.tabVendors.Name = "tabVendors";
-            this.tabVendors.Size = new System.Drawing.Size(693, 406);
+            this.tabVendors.Size = new System.Drawing.Size(693, 556);
             // 
             // tabProducts
             // 
             this.tabProducts.Caption = "Products";
             this.tabProducts.Name = "tabProducts";
-            this.tabProducts.Size = new System.Drawing.Size(471, 430);
+            this.tabProducts.Size = new System.Drawing.Size(693, 556);
             // 
             // tabClients
             // 
             this.tabClients.Caption = "Clients";
             this.tabClients.Name = "tabClients";
-            this.tabClients.Size = new System.Drawing.Size(471, 430);
+            this.tabClients.Size = new System.Drawing.Size(693, 556);
             // 
             // addButt
             // 
@@ -202,6 +232,7 @@
             // 
             this.flowLayoutPanel1.Controls.Add(this.addButt);
             this.flowLayoutPanel1.Controls.Add(this.deleteButt);
+            this.flowLayoutPanel1.Controls.Add(this.saveButt);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -218,30 +249,19 @@
             this.deleteButt.Size = new System.Drawing.Size(75, 23);
             this.deleteButt.TabIndex = 4;
             this.deleteButt.Text = "Delete";
+            this.deleteButt.Click += new System.EventHandler(this.deleteButt_Click);
             // 
-            // clientButtEdit
+            // saveButt
             // 
-            this.clientButtEdit.AutoHeight = false;
-            this.clientButtEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.clientButtEdit.Name = "clientButtEdit";
-            this.clientButtEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.clientButtEdit_ButtonClick);
-            // 
-            // itemButtEdit
-            // 
-            this.itemButtEdit.AutoHeight = false;
-            this.itemButtEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.itemButtEdit.Name = "itemButtEdit";
-            this.itemButtEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.itemButtEdit_ButtonClick);
-            // 
-            // vendorButtEdit
-            // 
-            this.vendorButtEdit.AutoHeight = false;
-            this.vendorButtEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.vendorButtEdit.Name = "vendorButtEdit";
-            this.vendorButtEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.vendorButtEdit_ButtonClick);
+            this.saveButt.Appearance.BackColor = System.Drawing.Color.LightGray;
+            this.saveButt.Appearance.Options.UseBackColor = true;
+            this.saveButt.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
+            this.saveButt.Location = new System.Drawing.Point(165, 3);
+            this.saveButt.Name = "saveButt";
+            this.saveButt.Size = new System.Drawing.Size(75, 23);
+            this.saveButt.TabIndex = 5;
+            this.saveButt.Text = "Save";
+            this.saveButt.Click += new System.EventHandler(this.saveButt_Click);
             // 
             // frmMain
             // 
@@ -253,15 +273,15 @@
             this.Name = "frmMain";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.gvItems)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.productButtEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdOrders)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvOrders)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clientButtEdit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.vendorButtEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tabPaneMain)).EndInit();
             this.tabPaneMain.ResumeLayout(false);
             this.tabOrders.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.clientButtEdit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.itemButtEdit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.vendorButtEdit)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -285,8 +305,9 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private DevExpress.XtraEditors.SimpleButton deleteButt;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit clientButtEdit;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit itemButtEdit;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit productButtEdit;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit vendorButtEdit;
+        private DevExpress.XtraEditors.SimpleButton saveButt;
     }
 }
 

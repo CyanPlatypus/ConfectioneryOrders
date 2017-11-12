@@ -32,6 +32,18 @@ namespace ConfectioneryOrders.Model
             get { return Vendor?.Name; }
         }
 
+        [NotMapped]
+        public double Price {
+            get {
+                double p = 0;
+                foreach (Item item in Items)
+                {
+                    p += item.Quantity * item.Product.Price;
+                }
+                return p;
+            }
+        }
+
         public List<Item> Items { get; set; }
 
         public Order()
