@@ -23,7 +23,7 @@ namespace ConfectioneryOrders.UC
             InitializeComponent();
         }
 
-        public object GetObject()
+        public object GetSelectedObject()
         {
             return ((ColumnView)grdMain.FocusedView).GetFocusedRow();
         }

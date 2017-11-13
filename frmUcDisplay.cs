@@ -41,7 +41,7 @@ namespace ConfectioneryOrders
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            selectedObject = iHaveObject?.GetObject();
+            selectedObject = iHaveObject?.GetSelectedObject();
         }
     }
 }

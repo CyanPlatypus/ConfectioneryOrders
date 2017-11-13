@@ -33,12 +33,15 @@ namespace ConfectioneryOrders.Model
         }
 
         [NotMapped]
-        public double Price {
+        public double Cost {
             get {
                 double p = 0;
                 foreach (Item item in Items)
                 {
-                    p += item.Quantity * item.Product.Price;
+                    if (item.Product != null)
+                    {
+                        p += item.Quantity * item.Product.Price;
+                    }
                 }
                 return p;
             }

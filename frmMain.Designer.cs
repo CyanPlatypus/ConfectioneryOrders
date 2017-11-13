@@ -35,7 +35,6 @@
             this.clmQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdOrders = new DevExpress.XtraGrid.GridControl();
             this.gvOrders = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.clmID = new DevExpress.XtraGrid.Columns.GridColumn();
             this.clmClient = new DevExpress.XtraGrid.Columns.GridColumn();
             this.clientButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.clmVendor = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -49,6 +48,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.deleteButt = new DevExpress.XtraEditors.SimpleButton();
             this.saveButt = new DevExpress.XtraEditors.SimpleButton();
+            this.clmCost = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.productButtEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdOrders)).BeginInit();
@@ -120,23 +120,14 @@
             // gvOrders
             // 
             this.gvOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.clmID,
             this.clmClient,
-            this.clmVendor});
+            this.clmVendor,
+            this.clmCost});
             this.gvOrders.GridControl = this.grdOrders;
             this.gvOrders.Name = "gvOrders";
             this.gvOrders.OptionsBehavior.Editable = false;
             this.gvOrders.OptionsDetail.AllowExpandEmptyDetails = true;
             this.gvOrders.OptionsView.ShowGroupPanel = false;
-            // 
-            // clmID
-            // 
-            this.clmID.Caption = "ID";
-            this.clmID.FieldName = "ID";
-            this.clmID.Name = "clmID";
-            this.clmID.OptionsColumn.AllowEdit = false;
-            this.clmID.Visible = true;
-            this.clmID.VisibleIndex = 0;
             // 
             // clmClient
             // 
@@ -145,7 +136,7 @@
             this.clmClient.FieldName = "ClientName";
             this.clmClient.Name = "clmClient";
             this.clmClient.Visible = true;
-            this.clmClient.VisibleIndex = 1;
+            this.clmClient.VisibleIndex = 0;
             // 
             // clientButtEdit
             // 
@@ -162,7 +153,7 @@
             this.clmVendor.FieldName = "VendorName";
             this.clmVendor.Name = "clmVendor";
             this.clmVendor.Visible = true;
-            this.clmVendor.VisibleIndex = 2;
+            this.clmVendor.VisibleIndex = 1;
             // 
             // vendorButtEdit
             // 
@@ -263,6 +254,14 @@
             this.saveButt.Text = "Save";
             this.saveButt.Click += new System.EventHandler(this.saveButt_Click);
             // 
+            // clmCost
+            // 
+            this.clmCost.Caption = "Cost";
+            this.clmCost.FieldName = "Cost";
+            this.clmCost.Name = "clmCost";
+            this.clmCost.Visible = true;
+            this.clmCost.VisibleIndex = 2;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -295,7 +294,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn clmProduct;
         private DevExpress.XtraGrid.Columns.GridColumn clmQuantity;
         private DevExpress.XtraGrid.Views.Grid.GridView gvOrders;
-        private DevExpress.XtraGrid.Columns.GridColumn clmID;
         private DevExpress.XtraGrid.Columns.GridColumn clmClient;
         private DevExpress.XtraGrid.Columns.GridColumn clmVendor;
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabVendors;
@@ -308,6 +306,7 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit productButtEdit;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit vendorButtEdit;
         private DevExpress.XtraEditors.SimpleButton saveButt;
+        private DevExpress.XtraGrid.Columns.GridColumn clmCost;
     }
 }
 

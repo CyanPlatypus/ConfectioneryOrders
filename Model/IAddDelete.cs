@@ -14,6 +14,6 @@ namespace ConfectioneryOrders.Model
 
     public interface IHaveObject
     {
-        Object GetObject();
+        Object GetSelectedObject();
     }
 }

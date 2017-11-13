@@ -121,7 +121,7 @@ namespace ConfectioneryOrders
         {
             if (tabPaneMain.SelectedPage == tabOrders)
             {
-                using (frmMakeOrder f = new frmMakeOrder() )
+                using (frmMakeOrder f = new frmMakeOrder())
                 {
                     Order o = new Order();
                     if (f.ShowDialog(o,
@@ -240,21 +240,39 @@ namespace ConfectioneryOrders
 
             if (tabPaneMain.SelectedPage == tabVendors)
             {
-                if ((ucVendors as ucVendors).IsDetailsFocused())
+                Object o = ucVendors.GetSelectedObject();
+
+                if (o is Vendor)
                 {
-                    VendorProduct i = new VendorProduct();
-                    cContext.VendorsProducts.Add(i);
+                    if (cContext.Orders.Local.Any(a => a.Vendor == (o as Vendor)))
+                    {
+                        if (XtraMessageBox.Show("There are related orders. Do you want to delete them?" +
+                                                "\n" +
+                                                "If No this vendor will not be deleted.",
+                                "Delete related orders", MessageBoxButtons.YesNo)
+                            == DialogResult.Yes)
+                        {
+                            //foreach (var ord in cContext.Orders.Local.Where(a => a.Vendor == (o as Vendor)).ToList())
+                            //{
+                            //    cContext.Orders.Local.Remove(ord);
+                            //}
+                            cContext.Vendors.Remove(o as Vendor);
+
+                            // all entities in inconsistent state will be deleted
+                            cContext.SaveChanges(); 
+                        }
+                    }
                 }
-                else
+                if (o is VendorProduct)
                 {
-                    Vendor i = new Vendor();
-                    cContext.Vendors.Add(i);
                 }
+
                 return;
             }
 
             if (tabPaneMain.SelectedPage == tabProducts)
             {
+                //ucProducts.GetSelectedObject();
                 Product i = new Product();
                 cContext.Products.Add(i);
                 return;
@@ -262,8 +280,26 @@ namespace ConfectioneryOrders
 
             if (tabPaneMain.SelectedPage == tabClients)
             {
-                Client i = new Client();
-                cContext.Clients.Add(i);
+                Object o = ucClients.GetSelectedObject();
+
+                if (o is Client)
+                {
+                    if (cContext.Orders.Local.Any(a => a.Client == (o as Client)))
+                    {
+                        if (XtraMessageBox.Show("There are related orders. Do you want to delete them?" +
+                                                "\n" +
+                                                "If No this client will not be deleted.",
+                                "Delete related orders", MessageBoxButtons.YesNo)
+                            == DialogResult.Yes)
+                        {
+                            cContext.Clients.Remove(o as Client);
+
+                            // all entities in inconsistent state will be deleted
+                            cContext.SaveChanges();
+                        }
+                    }
+                }
+
                 return;
             }
         }
@@ -272,16 +308,16 @@ namespace ConfectioneryOrders
         private void clientButtEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             Object o = frmDisplay.ShowDialog(ucClients);
-            if ( o != null && o is Client)
+            if (o != null && o is Client)
             {
                 (gvOrders.GetFocusedRow() as Order).Client = (Client)o;
             }
             this.tabClients.Controls.Add(this.ucClients);
         }
-        
+
         private void productButtEdit_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-           
+
             Object o = frmDisplay.ShowDialog(ucProducts);
             if (o != null && o is Product)
             {
