@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ConfectioneryOrders.UC;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 
 namespace ConfectioneryOrders
@@ -33,7 +34,7 @@ namespace ConfectioneryOrders
 
             LoadDB("k");
 
-            ucVendors = new ucVendors(cContext.Vendors.Local.ToBindingList());
+            ucVendors = new ucVendors(cContext.Vendors.Local.ToBindingList(), EditProduct);
             ucProducts = new ucProducts(cContext.Products.Local.ToBindingList());
             ucClients = new ucClients(cContext.Clients.Local.ToBindingList());
 
@@ -117,40 +118,95 @@ namespace ConfectioneryOrders
             cContext.VendorsProducts.Load();
         }
 
+        private bool IsValidOrder(Order o, Action<VendorProduct, int> act )
+        {
+            if (o == null) return false;
+            Vendor v = o.Vendor;
+
+            if (o.Vendor == null)
+            {
+                MessageBox.Show("Field Vendor should be set.");
+                return false;
+            }
+
+            if (o.Client== null)
+            {
+                MessageBox.Show("Field Client should be set.");
+                return false;
+            }
+
+            foreach (var item in o.Items)
+            {
+                bool found = false;
+                
+                foreach (var vendorProduct in v.VendorsProducts)
+                {
+                    if (item.Product == vendorProduct.Product)
+                    {
+                        found = true;
+                        if (vendorProduct.Quantity - item.Quantity >= 0)
+                        {
+                            act?.Invoke(vendorProduct, item.Quantity);
+                            //vendorProduct.Quantity -= item.Quantity;
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Not enough products {item.ProductName} in stock.");
+                            return false;
+                        }
+
+                    }
+                    if (found) break;
+                }
+                if (!found)
+                {
+                    MessageBox.Show($"Product {item.ProductName} was not found" +
+                                    $" on vendor\'s {v.Name} stock.");
+                    return false;
+                }
+
+            }
+            return true;
+        }
+
+        private bool IsValidOrder(Order arg)
+        {
+            return IsValidOrder(arg, null);
+        }
+
         private void addButt_Click(object sender, EventArgs e)
         {
+            #region orders&items
             if (tabPaneMain.SelectedPage == tabOrders)
             {
                 using (frmMakeOrder f = new frmMakeOrder())
                 {
                     Order o = new Order();
                     if (f.ShowDialog(o,
-                        EditClient, EditProduct, EditVendor) == DialogResult.OK)
+                        EditClient, EditProduct, EditVendor, IsValidOrder) == DialogResult.OK)
                     {
+
+                        IsValidOrder(o, (v, q) => v.Quantity -= q);
                         cContext.Orders.Add(o);
                     }
                 }
-                //if (grdOrders.FocusedView != gvItems)
-                //{
-                //    Order o = new Order();
-                //    cContext.Orders.Add(o);
-                //}
-                //else
-                //{
-                //    Item i = new Item();
-                //    cContext.Items.Add(i);
-                //}
-
                 return;
             }
+            #endregion
 
+            #region vendors&vendorsproducts
             if (tabPaneMain.SelectedPage == tabVendors)
             {
                 if ((ucVendors as ucVendors).IsDetailsFocused())
                 {
                     VendorProduct i = new VendorProduct();
-                    (ucVendors as ucVendors).GetFocusedRow()?.VendorsProducts.Add(i);
-                    //cContext.VendorsProducts.Add(i);
+                    Vendor v = (ucVendors as ucVendors).GetFocusedRow(); //.VendorsProducts.Add(i);
+                    if (v != null)
+                    {
+                        i.Vendor = v;
+                        v.VendorsProducts.Add(i);
+                    }
+                //cContext.VendorsProducts.Add(i);
                 }
                 else
                 {
@@ -159,85 +215,42 @@ namespace ConfectioneryOrders
                 }
                 return;
             }
+            #endregion
 
+            #region products
             if (tabPaneMain.SelectedPage == tabProducts)
             {
                 Product i = new Product();
                 cContext.Products.Add(i);
                 return;
             }
+            #endregion
 
+            #region clients
             if (tabPaneMain.SelectedPage == tabClients)
             {
                 Client i = new Client();
                 cContext.Clients.Add(i);
                 return;
-            }
-            //// order vendor product client
-            //switch (tabPaneMain.TabIndex)
-            //{
-            //    case 0:
-            //        {
-
-            //            if (grdOrders.FocusedView == gvItems)
-            //            {
-            //                Item i = new Item();
-            //                cContext.Items.Add(i);
-            //            }
-            //            else
-            //            {
-            //                Order o = new Order();
-            //                cContext.Orders.Add(o);
-            //            }
-
-            //            break;
-            //        }
-            //    case 1:
-            //        {
-            //            if (ucVendors.IsDetailsFocused())
-            //            {
-            //                VendorProduct i = new VendorProduct();
-            //                cContext.VendorsProducts.Add(i);
-            //            }
-            //            else
-            //            {
-            //                Vendor i = new Vendor();
-            //                cContext.Vendors.Add(i);
-            //            }
-            //            break;
-            //        }
-            //    case 2:
-            //        {
-            //            Product i = new Product();
-            //            cContext.Products.Add(i);
-            //            break;
-            //        }
-            //    case 3:
-            //    {
-            //        Client i = new Client();
-            //        cContext.Clients.Add(i);
-            //        break;
-            //    }
-            //}
+            } 
+            #endregion
 
         }
 
+
+
         private void deleteButt_Click(object sender, EventArgs e)
         {
+            #region orders
             if (tabPaneMain.SelectedPage == tabOrders)
             {
-                if (grdOrders.FocusedView == gvItems)
-                {
-                    gvItems.DeleteSelectedRows();
-                }
-                else
-                {
-                    gvOrders.DeleteSelectedRows();
-                }
-
+                ((ColumnView)grdOrders.FocusedView).DeleteSelectedRows();
+                cContext.SaveChanges();
                 return;
             }
+            #endregion
 
+            #region vendors&vandorproducts
             if (tabPaneMain.SelectedPage == tabVendors)
             {
                 Object o = ucVendors.GetSelectedObject();
@@ -252,32 +265,59 @@ namespace ConfectioneryOrders
                                 "Delete related orders", MessageBoxButtons.YesNo)
                             == DialogResult.Yes)
                         {
-                            //foreach (var ord in cContext.Orders.Local.Where(a => a.Vendor == (o as Vendor)).ToList())
-                            //{
-                            //    cContext.Orders.Local.Remove(ord);
-                            //}
                             cContext.Vendors.Remove(o as Vendor);
 
                             // all entities in inconsistent state will be deleted
-                            cContext.SaveChanges(); 
+                            cContext.SaveChanges();
                         }
+                    }
+                    else
+                    {
+                        cContext.Vendors.Remove(o as Vendor);
+                        cContext.SaveChanges();
                     }
                 }
                 if (o is VendorProduct)
                 {
+                    cContext.VendorsProducts.Remove(o as VendorProduct);
+                    cContext.SaveChanges();
                 }
 
                 return;
             }
+            #endregion
 
+            #region products
             if (tabPaneMain.SelectedPage == tabProducts)
             {
-                //ucProducts.GetSelectedObject();
-                Product i = new Product();
-                cContext.Products.Add(i);
+                Object o = ucProducts.GetSelectedObject();
+
+                if (cContext.VendorsProducts.Local.Any(a => a.Product == (o as Product))
+                    || cContext.Items.Local.Any(i => i.Product == (o as Product)))
+                {
+                    if (XtraMessageBox.Show("There are related entities. Do you want to delete them?" +
+                                            "\n" +
+                                            "If No this product will not be deleted.",
+                            "Delete related entities", MessageBoxButtons.YesNo)
+                        == DialogResult.Yes)
+                    {
+                        cContext.Products.Remove(o as Product);
+
+                        // all entities in inconsistent state will be deleted
+                        cContext.SaveChanges();
+                    }
+                }
+                else
+                {
+                    cContext.Products.Remove(o as Product);
+                    cContext.SaveChanges();
+                }
+
                 return;
             }
+            #endregion
 
+            #region clients
             if (tabPaneMain.SelectedPage == tabClients)
             {
                 Object o = ucClients.GetSelectedObject();
@@ -298,10 +338,16 @@ namespace ConfectioneryOrders
                             cContext.SaveChanges();
                         }
                     }
+                    else
+                    {
+                        cContext.Clients.Remove(o as Client);
+                        cContext.SaveChanges();
+                    }
                 }
 
                 return;
-            }
+            } 
+            #endregion
         }
 
 
@@ -340,21 +386,27 @@ namespace ConfectioneryOrders
 
         public Client EditClient()
         {
+            ucClients.DisableEdit();
             Object o = frmDisplay.ShowDialog(ucClients);
+            ucClients.EnableEdit();
             this.tabClients.Controls.Add(this.ucClients);
             return o as Client;
         }
 
         public Vendor EditVendor()
         {
+            ucVendors.DisableEdit();
             Object o = frmDisplay.ShowDialog(ucVendors);
+            ucVendors.EnableEdit();
             this.tabVendors.Controls.Add(this.ucVendors);
             return o as Vendor;
         }
 
         public Product EditProduct()
         {
+            ucProducts.DisableEdit();
             Object o = frmDisplay.ShowDialog(ucProducts);
+            ucProducts.EnableEdit();
             this.tabProducts.Controls.Add(this.ucProducts);
             return o as Product;
         }

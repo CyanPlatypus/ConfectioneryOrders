@@ -33,8 +33,10 @@ namespace ConfectioneryOrders.Model
         }
 
         [NotMapped]
-        public double Cost {
-            get {
+        public double Cost
+        {
+            get
+            {
                 double p = 0;
                 foreach (Item item in Items)
                 {

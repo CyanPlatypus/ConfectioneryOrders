@@ -39,6 +39,7 @@
             this.clientButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.clmVendor = new DevExpress.XtraGrid.Columns.GridColumn();
             this.vendorButtEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.clmCost = new DevExpress.XtraGrid.Columns.GridColumn();
             this.tabPaneMain = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabOrders = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tabVendors = new DevExpress.XtraBars.Navigation.TabNavigationPage();
@@ -48,7 +49,6 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.deleteButt = new DevExpress.XtraEditors.SimpleButton();
             this.saveButt = new DevExpress.XtraEditors.SimpleButton();
-            this.clmCost = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gvItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.productButtEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdOrders)).BeginInit();
@@ -163,6 +163,14 @@
             this.vendorButtEdit.Name = "vendorButtEdit";
             this.vendorButtEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.vendorButtEdit_ButtonClick);
             // 
+            // clmCost
+            // 
+            this.clmCost.Caption = "Cost";
+            this.clmCost.FieldName = "Cost";
+            this.clmCost.Name = "clmCost";
+            this.clmCost.Visible = true;
+            this.clmCost.VisibleIndex = 2;
+            // 
             // tabPaneMain
             // 
             this.tabPaneMain.Controls.Add(this.tabOrders);
@@ -254,14 +262,6 @@
             this.saveButt.Text = "Save";
             this.saveButt.Click += new System.EventHandler(this.saveButt_Click);
             // 
-            // clmCost
-            // 
-            this.clmCost.Caption = "Cost";
-            this.clmCost.FieldName = "Cost";
-            this.clmCost.Name = "clmCost";
-            this.clmCost.Visible = true;
-            this.clmCost.VisibleIndex = 2;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,6 +270,7 @@
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.tabPaneMain);
             this.Name = "frmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.gvItems)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.productButtEdit)).EndInit();

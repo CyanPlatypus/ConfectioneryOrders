@@ -188,3 +188,5 @@ D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.UC.ucProducts.resourc
 D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.UC.ucVendors.resources
 D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.frmUcDisplay.resources
 D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.frmMakeOrder.resources
+D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.Migrations.Init.resources
+D:\julie\ConfectioneryOrders\obj\Debug\ConfectioneryOrders.Migrations.deleteNameInVendorProduct.resources

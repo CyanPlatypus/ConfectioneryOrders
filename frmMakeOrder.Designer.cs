@@ -56,12 +56,12 @@
             this.okButton.Appearance.BackColor = System.Drawing.Color.YellowGreen;
             this.okButton.Appearance.Options.UseBackColor = true;
             this.okButton.ButtonStyle = DevExpress.XtraEditors.Controls.BorderStyles.UltraFlat;
-            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.Location = new System.Drawing.Point(261, 345);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 3;
             this.okButton.Text = "Ok";
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // cancelButt
             // 

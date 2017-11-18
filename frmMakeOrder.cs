@@ -18,23 +18,23 @@ namespace ConfectioneryOrders
         private Func<Client> changeClient;
         private Func<Product> changeProduct;
         private Func<Vendor> changeVendor;
-
+        private Func<Order, bool> check;
         public frmMakeOrder()
         {
             InitializeComponent();
         }
 
         public DialogResult ShowDialog(Order o, 
-            Func<Client> changeClient, Func<Product> changeProduct, Func<Vendor> changeVendor)
+            Func<Client> changeClient, Func<Product> changeProduct, Func<Vendor> changeVendor, Func<Order, bool> check)
         {
             this.changeClient = changeClient;
             this.changeProduct = changeProduct;
             this.changeVendor = changeVendor;
-
+            this.check = check;
             order = o;
             grdItems.DataSource = o.Items;
-            
-            //buttEdClient.DataBindings.Add("Text", order, "ClientName", false, DataSourceUpdateMode.OnPropertyChanged );
+
+            lblCost.DataBindings.Add("Text", order, "Cost", true, DataSourceUpdateMode.OnPropertyChanged );
             //buttEdVendor.DataBindings.Add("Text", order, "VendorName", true, DataSourceUpdateMode.OnPropertyChanged);
 
             return ShowDialog();
@@ -45,7 +45,20 @@ namespace ConfectioneryOrders
             Item i = gvItems.GetFocusedRow() as Item;
             if (i != null)
             {
-                i.Product = changeProduct();
+                if (changeProduct != null)
+                {
+                    var p = changeProduct();
+
+                    if (p != null)
+                    {
+                        if (i.Order.Items.Any(item => item.Product == p))
+                        {
+                            MessageBox.Show("Item with this product already exists.");
+                            return;
+                        }
+                        i.Product = p;
+                    }
+                }
             }
         }
 
@@ -63,13 +76,27 @@ namespace ConfectioneryOrders
 
         private void buttAdd_Click(object sender, EventArgs e)
         {
-            order.Items.Add(new Item());
+            Item i = new Item();
+            i.Order = order;
+            order.Items.Add(i);
             grdItems.RefreshDataSource();
         }
 
         private void buttDelete_Click(object sender, EventArgs e)
         {
             gvItems.DeleteSelectedRows();
+        }
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            if (check != null)
+            {
+                if (!check.Invoke(order))
+                    return;
+            }
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

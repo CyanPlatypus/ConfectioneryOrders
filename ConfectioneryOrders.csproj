@@ -81,6 +81,15 @@
     <Compile Include="frmUcDisplay.Designer.cs">
       <DependentUpon>frmUcDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711181521596_Init.cs" />
+    <Compile Include="Migrations\201711181521596_Init.Designer.cs">
+      <DependentUpon>201711181521596_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711181531104_deleteNameInVendorProduct.cs" />
+    <Compile Include="Migrations\201711181531104_deleteNameInVendorProduct.Designer.cs">
+      <DependentUpon>201711181531104_deleteNameInVendorProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Client.cs" />
     <Compile Include="Model\ConfectioneryContext.cs" />
     <Compile Include="Model\IAddDelete.cs" />
@@ -123,6 +132,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmUcDisplay.resx">
       <DependentUpon>frmUcDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711181521596_Init.resx">
+      <DependentUpon>201711181521596_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711181531104_deleteNameInVendorProduct.resx">
+      <DependentUpon>201711181531104_deleteNameInVendorProduct.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

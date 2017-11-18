@@ -22,12 +22,16 @@ namespace ConfectioneryOrders.UC
 
         private GridView childView;
 
-        public ucVendors(BindingList<Vendor> bs )
+        private Func<Product> getProduct;
+
+        public ucVendors(BindingList<Vendor> bs, Func<Product> v )
         {
             InitializeComponent();
             this.Dock = DockStyle.Fill;
 
             grdVendors.DataSource = bs;
+
+            getProduct = v;
 
             gvVendor.MasterRowExpanded += GvVendor_MasterRowExpanded;
         }
@@ -61,7 +65,43 @@ namespace ConfectioneryOrders.UC
         private void repositoryItemButtonEditProduct_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             object o = (grdVendors.FocusedView as GridView).GetFocusedRow();
-            MessageBox.Show(o is Vendor?"vendor":"not vendor");
+            //MessageBox.Show(o is Vendor?"vendor":"not vendor");
+
+            if (o is VendorProduct)
+            {
+                if (getProduct != null)
+                {
+                    Product p = getProduct();
+                    if (p != null)
+                    {
+                        //vendor of current vendorProduct already has vendorProduct with such Product
+                        if ((o as VendorProduct).Vendor.VendorsProducts.Any(vp => vp.Product == p))
+                        {
+                            MessageBox.Show("Entity with this product already exists.");
+                            return;
+                        }
+
+                        (o as VendorProduct).Product = p;
+                    }
+                }
+            }
+                
+        }
+
+        public override void EnableEdit()
+        {
+            this.gvVP.OptionsBehavior.Editable = true;
+            base.EnableEdit();
+        }
+
+        public override void DisableEdit()
+        {
+            base.DisableEdit();
+            this.gvVP.OptionsBehavior.Editable = false;
         }
     }
+
+        
+
 }
+
